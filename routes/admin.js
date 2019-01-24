@@ -34,6 +34,15 @@ router.post('/', function( req, res ) {
       .catch( err => console.log(err) );
   }
 
+  if ( task.login ) {
+    const authorised = [ "689d2c31115b1a84d9c5b34cc7a4463555341848a92e962d28ec16a46a689620" ];
+    if ( authorised.includes( task.value ) ) {
+      res.status(200).send();
+    } else {
+      res.status(401).send("{error: \"Not Authorised\"}");
+    }
+  }
+
 
 
   });
