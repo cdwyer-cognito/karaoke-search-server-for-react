@@ -1,6 +1,6 @@
 const paths = {
     virtualDJdatabaseXMLFilepaths: [
-        "E:/VirtualDJ/database.xml" 
+        "./VirtualDJ/database.xml" 
     ]
 };
 

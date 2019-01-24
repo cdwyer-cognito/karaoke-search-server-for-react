@@ -4,24 +4,37 @@ const LoadXML = require('../src/loadXML');
 const loadXML = new LoadXML();
 const QueryRequestsCollection = require('../src/queryRequestsCollection');
 const queryRequestsCollection = new QueryRequestsCollection();
+const QueryAdminCollection = require('../src/queryAdminCollection');
+const queryAdminCollection = new QueryAdminCollection();
 
-router.get('/', async function( req, res ) {
+router.post('/', function( req, res ) {
   const task = req.body;
-  let message = "";
+  console.log(' /admin-task endpoint reached with obj', task);
 
-    if ( task.reloadDatabase ) {
-      console.log( "Reloading database.xml file to songs table");
-      message = await loadXML.loadXML();
-      res.status(200).send(message);
-    }
+  if ( task.reloadDatabase ) {
+    console.log( "Reloading database.xml file to songs table");
+    loadXML.loadXML()
+      .then( res.status(200).send() )
+      .catch(err => console.log( err ));
+  }
 
-    if ( task.clearRequests ) {
-      console.log( "dropping the requests table");
-      message = await queryRequestsCollection.clearRequestsCollection();
-      res.status(200).send(message);
-    }
+  if ( task.clearRequests ) {
+    console.log( "dropping the requests table");
+    queryRequestsCollection.clearRequestsCollection()
+      .then( res.status(200).send() )
+      .catch(err => console.log( err ));
+  }
 
-    res.send( task ).status(200);   
+  if ( task.getAdminCollection ) {
+    console.log( "getting the admin table");
+    queryAdminCollection.getCollection()
+      .then( collection => { 
+        console.log( collection );
+        res.status(200).send( JSON.stringify(collection) ) } )
+      .catch( err => console.log(err) );
+  }
+
+
 
   });
 

@@ -3,16 +3,16 @@ const router = express.Router();
 const QuerySongsCollection = require('../src/querySongsCollection');
 const querySongsCollection = new QuerySongsCollection();
 
-router.get('/', function(req, res) {
+router.get('/', async function(req, res) {
   const queryParams = req.query;
   console.log( queryParams )
 
-  const value = decodeURI( queryParams.value );
+  let value = decodeURI( queryParams.value );
   let dbresults = [];
 
   if ( queryParams.browse === 'true') {
     value = value === '0-9' ? "[^a-zA-Z:]" : value;
-    
+    console.log( 'Browse by ' + queryParams.searchby + " value: " + value );
     switch( queryParams.searchby ) {
       case 'artist':
         dbresults = await querySongsCollection.artistStartsWith( value );
@@ -43,7 +43,7 @@ router.get('/', function(req, res) {
     }
   }
 
-  res.send( dbresults).status(200);
+  res.send( dbresults ).status(200);
 });
 
 module.exports = router;

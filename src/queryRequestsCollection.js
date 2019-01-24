@@ -15,16 +15,6 @@ class QueryRequestCollection {
         const collection = this.collection;
         let dataObj;
 
-        function guid() {
-            function s4() {
-            return Math.floor( ( 1 + Math.random() ) * 0x10000)
-            .toString(16)
-            .substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();
-        }
-
         return new Promise( async function(resolve){
                 let client;
             
@@ -36,17 +26,12 @@ class QueryRequestCollection {
                     const db = client.db( dbName );
 
                     dataObj = {
-                        GUID: guid(),
-                        Singer: jsonObj.Singer,
-                        DiscRef: jsonObj.DiscRef,
-                        Artist: jsonObj.Artist,
-                        Title: jsonObj.Title,
-                        Length: jsonObj.Length,
+                        ...jsonObj,
                         DateTime: new Date(),
-                        State: false,
                         CompletedDateTime: 0
                     }
                 
+                    console.log( dataObj );
                     let r = await db.collection( collection ).insertOne(dataObj);
 
                     equal( 1, r.insertedCount );
@@ -60,7 +45,7 @@ class QueryRequestCollection {
                 if (client) {
                     client.close();
                 }
-                console.log("Request " + dataObj.GUID + " has been added!");
+                console.log("Request " + dataObj.RequestID + " has been added!");
                 resolve( { Status: "success", Request: dataObj } );
         });
     }
@@ -84,7 +69,7 @@ class QueryRequestCollection {
 
                 const col = db.collection( collection );
         
-                results = await col.find( { GUID: /.*/ } ).toArray();
+                results = await col.find( { RequestID: /.*/ } ).toArray();
 
                 console.log("There are " + results.length + " records returned");
             } catch (err) {
@@ -95,39 +80,6 @@ class QueryRequestCollection {
         }();
 
         return results;
-
-    }
-
-    
-    async getRequest(guid){
-
-        let result;
-        const MongoClient = require('mongodb').MongoClient;
-        const url = this.url;
-        const dbName = this.dbName;
-        const collection = this.collection;
-        
-        await async function() {
-            let client;
-        
-            try {
-                client = await MongoClient.connect( url, { useNewUrlParser: true } );
-                console.log("Connected correctly to server");
-        
-                const db = client.db( dbName );
-
-                const col = db.collection( collection );
-        
-                result = await col.find( { GUID: guid } ).toArray();
-
-            } catch (err) {
-                console.log( err.stack );
-            }
-        
-            client.close();
-        }();
-
-        return result;
 
     }
 
@@ -149,23 +101,23 @@ class QueryRequestCollection {
                 const db = client.db( dbName );
                 const col = db.collection( collection );
 
-                let r = await col.updateOne( { GUID: jsonObj.GUID },  {$set: {State: true, CompletedDateTime: new Date() } } );
+                let r = await col.updateOne( { RequestID: jsonObj.RequestID },  {$set: {State: "completed", CompletedDateTime: new Date() } } );
                 equal( 1, r.matchedCount );
                 equal( 1, r.modifiedCount );
 
-                console.log("Request for " + jsonObj.GUID + " is complete");
-                resolve({Status: "success", GUID: jsonObj.GUID });
+                console.log("Request for " + jsonObj.RequestID + " is complete");
+                resolve({Status: "success", RequestID: jsonObj.RequestID });
                     
             } catch (err) {
                 console.log( err.stack );
-                resolve({Status: "failed", GUID: jsonObj.GUID, Error: err });
+                resolve({Status: "failed", RequestID: jsonObj.RequestID, Error: err });
             }
     
             client.close();
         })
         .catch(err => {
             console.log(err)
-            return {Status: "failed", GUID: jsonObj.GUID, Error: err };
+            return {Status: "failed", RequestID: jsonObj.RequestID, Error: err };
         })
     }
 
