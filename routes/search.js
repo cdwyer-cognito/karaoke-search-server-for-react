@@ -3,7 +3,7 @@ const router = express.Router();
 const QuerySongsCollection = require('../src/querySongsCollection');
 const querySongsCollection = new QuerySongsCollection();
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   const queryParams = req.query;
   console.log( queryParams )
 
