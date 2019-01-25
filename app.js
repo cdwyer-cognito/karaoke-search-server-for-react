@@ -18,7 +18,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -29,17 +28,17 @@ app.use(bodyParser.json())
 // enable CORS
 app.use(cors());
 
-app.use(express.static(path.join('./src', 'build')));
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join('./src', 'build', 'index.html'));
-});
-
 app.use('/api/find-songs', searchRouter);
 app.use('/api/new-request', newRequestRouter);
 app.use('/api/submitted-requests', submittedRequestsRouter);
 app.use('/api/completed-request', completedRequestRouter);
 app.use('/api/admin-task', adminRouter);
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
