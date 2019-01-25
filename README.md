@@ -4,6 +4,7 @@
 
 This is version 2 of the express server with RESTful endpoints for the front end developed with the react library
 You will need a recent version of nodejs installed as a local installation of mongodb.
+Mongodb can be downloaded from https://www.mongodb.com/download-center/community
 
 Database paths are stored in an array inside the json object in ./paths.js
 

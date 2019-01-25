@@ -195,28 +195,6 @@ class LoadXML {
 			}
 		}();
 
-		await async function() {
-			let client;
-		
-			try {
-
-				client = await MongoClient.connect( url, { useNewUrlParser: true } )
-				.catch(err => console.log(err));
-				
-				const db = client.db( dbName );
-			
-				let r = await db.collection( "admin" ).insertOne( { songCount: karaokeCounter } );
-				equal( 1, r.insertedCount );
-					
-			} catch (err) {
-				console.log( err.stack );
-			}
-		
-			if (client) {
-				client.close();
-			}
-		}();
-
 		return "Successfully loaded " + collection + " collection with " + karaokeCounter + " entries";
 		
 	}
