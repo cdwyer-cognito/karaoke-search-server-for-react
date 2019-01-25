@@ -1,14 +1,13 @@
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017/karaokeSearch";
+const dbName = "karaoke";
+const collection = "songs";
 class QuerySongsCollection {
 
     constructor(){
     }
 
     async runQuery( jsonObj ){
-        const MongoClient = require('mongodb').MongoClient;
-        const url = "mongodb://localhost:27017/karaokeSearch";
-        const dbName = "karaoke";
-        const collection = "songs";
-
         let results;
 
         await async function() {

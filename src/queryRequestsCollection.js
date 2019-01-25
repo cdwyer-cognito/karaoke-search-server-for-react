@@ -1,3 +1,5 @@
+const MongoClient = require('mongodb').MongoClient;
+const equal = require('assert');
 class QueryRequestCollection {
 
     constructor(){
@@ -7,9 +9,6 @@ class QueryRequestCollection {
     }
 
     async addRequest( jsonObj ) {
-
-        const MongoClient = require('mongodb').MongoClient;
-        const equal = require('assert');
         const url = this.url;
         const dbName = this.dbName;
         const collection = this.collection;
@@ -30,8 +29,7 @@ class QueryRequestCollection {
                         DateTime: new Date(),
                         CompletedDateTime: 0
                     }
-                
-                    console.log( dataObj );
+
                     let r = await db.collection( collection ).insertOne(dataObj);
 
                     equal( 1, r.insertedCount );
@@ -53,7 +51,6 @@ class QueryRequestCollection {
     async getRequests(){
 
         let results;
-        const MongoClient = require('mongodb').MongoClient;
         const url = this.url;
         const dbName = this.dbName;
         const collection = this.collection;
@@ -85,8 +82,6 @@ class QueryRequestCollection {
 
     async requestCompleted( jsonObj ){
 
-        const MongoClient = require('mongodb').MongoClient;
-        const equal = require('assert');
         const url = this.url;
         const dbName = this.dbName;
         const collection = this.collection;
@@ -123,7 +118,6 @@ class QueryRequestCollection {
 
     async clearRequestsCollection(){
 
-        const MongoClient = require('mongodb').MongoClient;
         const url = this.url;
         const dbName = this.dbName;
         const collection = this.collection;
