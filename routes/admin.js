@@ -9,7 +9,6 @@ const queryAdminCollection = new QueryAdminCollection();
 
 router.post('/', function( req, res ) {
   const task = req.body;
-  console.log(' /admin-task endpoint reached with obj', task);
 
   if ( task.reloadDatabase ) {
     console.log( "Reloading database.xml file to songs table");
@@ -35,16 +34,15 @@ router.post('/', function( req, res ) {
   }
 
   if ( task.login ) {
-    const authorised = [ "689d2c31115b1a84d9c5b34cc7a4463555341848a92e962d28ec16a46a689620" ];
-    if ( authorised.includes( task.value ) ) {
+    console.log( "Authentication request received!" );
+    if ( queryAdminCollection.authorised.includes( task.value ) ) {
+      console.log( "Authentication successful" );
       res.status(200).send();
     } else {
+      console.log( "Authentication failed" );
       res.status(401).send("{error: \"Not Authorised\"}");
     }
   }
-
-
-
-  });
+});
 
 module.exports = router;
