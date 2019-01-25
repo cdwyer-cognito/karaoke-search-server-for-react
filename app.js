@@ -29,11 +29,17 @@ app.use(bodyParser.json())
 // enable CORS
 app.use(cors());
 
-app.use('/find-songs', searchRouter);
-app.use('/new-request', newRequestRouter);
-app.use('/submitted-requests', submittedRequestsRouter);
-app.use('/completed-request', completedRequestRouter);
-app.use('/admin-task', adminRouter);
+app.use(express.static(path.join('./src', 'build')));
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join('./src', 'build', 'index.html'));
+});
+
+app.use('/api/find-songs', searchRouter);
+app.use('/api/new-request', newRequestRouter);
+app.use('/api/submitted-requests', submittedRequestsRouter);
+app.use('/api/completed-request', completedRequestRouter);
+app.use('/api/admin-task', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
