@@ -5,6 +5,7 @@ const querySongsCollection = new QuerySongsCollection();
 
 router.get('/', async function(req, res) {
   const queryParams = req.query;
+  console.log( queryParams )
 
   let value = decodeURI( queryParams.value );
   let dbresults = [];

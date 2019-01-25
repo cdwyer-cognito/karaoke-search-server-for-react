@@ -29,8 +29,10 @@ app.use(bodyParser.json())
 // enable CORS
 app.use(cors());
 
+app.use(express.static(path.join('./src', 'build')));
+
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join('./src', 'build', 'index.html'));
 });
 
 app.use('/api/find-songs', searchRouter);
