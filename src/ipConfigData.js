@@ -5,7 +5,7 @@ const os = require('os');
 function ipConfigData() {
     const ifaces = os.networkInterfaces();
     const addresses = [
-        { name: 'localStorage', alias: '', address: 'localhost'},
+        { name: 'local', alias: '', address: 'localhost'},
         { name: 'DNS', alias: '', address: os.hostname() }
     ];
     Object.keys(ifaces).forEach(function (ifname) {
