@@ -123,6 +123,6 @@ for ( let data of addresses ) {
   //{ name: 'xxxxxxx', alias: 'x', address: 'xxx.xxx.xxx.xxx' }
   let name = " " + data.name;
   let alias = " " + data.alias;
-  let address = " " + data.address + ":" + port;
-  console.log( "|" + name.padEnd( nameMaxLength + 2 ) + "|" + alias.padEnd( aliasMaxLength + 2 ) + "|" + address.padEnd( addressMaxLength ) + "|");
+  let address = data.address + ":" + port;
+  console.log( "|" + name.padEnd( nameMaxLength + 2 ) + "|" + alias.padEnd( aliasMaxLength + 2 ) + "| http://" + address.padEnd( addressMaxLength ) + "|");
 };
