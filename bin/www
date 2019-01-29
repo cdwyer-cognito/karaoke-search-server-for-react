@@ -8,6 +8,8 @@ const app = require('../app');
 const debug = require('debug')('karaoke-server:server');
 const http = require('http');
 
+const ipConfigData = require('../src/ipConfigData');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -88,3 +90,39 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * Console log ip info
+ */
+const addresses = ipConfigData();
+console.log("\n== Server Started On ===============================");
+
+let nameMaxLength = 0;
+let aliasMaxLength = 0;
+let addressMaxLength = 0;
+
+// calculate output padding, make it look pretty!
+for ( let data of addresses ) {
+  if ( data.name.length > nameMaxLength ) {
+    nameMaxLength = data.name.length;
+  }
+
+  if ( data.alias.length > aliasMaxLength ) {
+    aliasMaxLength = data.alias.length;
+  }
+
+  if ( data.address.length > addressMaxLength ) {
+    addressMaxLength = data.address.length;
+  }
+}
+
+// add the port length, seperation character and whitespace. 
+addressMaxLength += port.toString().length + 3;
+
+for ( let data of addresses ) {
+  //{ name: 'xxxxxxx', alias: 'x', address: 'xxx.xxx.xxx.xxx' }
+  let name = " " + data.name;
+  let alias = " " + data.alias;
+  let address = " " + data.address + ":" + port;
+  console.log( "|" + name.padEnd( nameMaxLength + 2 ) + "|" + alias.padEnd( aliasMaxLength + 2 ) + "|" + address.padEnd( addressMaxLength ) + "|");
+};
