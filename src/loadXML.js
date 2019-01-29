@@ -55,6 +55,11 @@ class LoadXML {
 		}
 				
 		for (let xmlFilepath of paths.virtualDJdatabaseXMLFilepaths ) {
+			if ( !fs.existsSync( xmlFilepath) ) {
+				console.log( "WARNING: file does not exist: ", xmlFilepath );
+				continue;
+			}
+			
 			console.log("Reading XML file " + xmlFilepath);
 			doc = fs.readFileSync( xmlFilepath ).toString();
 			
@@ -142,61 +147,65 @@ class LoadXML {
 			} 
 		}
 
-		console.log(karaokeCounter + " Karaoke Songs out of " + songCounter + " Songs in " + paths.virtualDJdatabaseXMLFilepaths.length + " xml document(s)");
+		if ( songsArray.length > 0 ) {
+			console.log(karaokeCounter + " Karaoke Songs out of " + songCounter + " Songs in " + paths.virtualDJdatabaseXMLFilepaths.length + " xml document(s)");
 
-		console.log("Dropping " + collection + " collection in " + dbName);
+			console.log("Dropping " + collection + " collection in " + dbName);
 
-		await async function(){
-			let client;
-		
-			try {
-				client = await MongoClient.connect( url, { useNewUrlParser: true } )
-				.catch(err => console.log(err));
-				console.log("Connected correctly to server");
-				
-				const db = client.db( dbName );
+			await async function(){
+				let client;
 			
-				let r = await db.collection( collection ).drop();
-				console.log( collection + " collection dropped");
-			
-			} catch ( err ) {
-				console.log( err.stack );
-			}
-		
-			if ( client ) {
-				client.close();
-			}
-		}();
-
-		console.log("Inserting data into " + collection + " collection in " + dbName + " database");
-
-		await async function() {
-			let client;
-		
-			try {
-
-				client = await MongoClient.connect( url, { useNewUrlParser: true } )
-				.catch(err => console.log(err));
-				console.log("Connected correctly to server");
-				
-				const db = client.db( dbName );
-			
-				let r = await db.collection( collection ).insertMany( songsArray );
-				equal( songsArray.length, r.insertedCount );
-				console.log("Data added to " + collection + " collection");  
+				try {
+					client = await MongoClient.connect( url, { useNewUrlParser: true } )
+					.catch(err => console.log(err));
+					console.log("Connected correctly to server");
 					
-			} catch (err) {
-				console.log( err.stack );
-				return "ERROR: Failed to load " + collection + " collection" + "<br/>" + err.stack;
-			}
-		
-			if (client) {
-				client.close();
-			}
-		}();
+					const db = client.db( dbName );
+				
+					let r = await db.collection( collection ).drop();
+					console.log( collection + " collection dropped");
+				
+				} catch ( err ) {
+					console.log( err.stack );
+				}
+			
+				if ( client ) {
+					client.close();
+				}
+			}();
 
-		return "Successfully loaded " + collection + " collection with " + karaokeCounter + " entries";
-		
+			console.log("Inserting data into " + collection + " collection in " + dbName + " database");
+
+			await async function() {
+				let client;
+			
+				try {
+
+					client = await MongoClient.connect( url, { useNewUrlParser: true } )
+					.catch(err => console.log(err));
+					console.log("Connected correctly to server");
+					
+					const db = client.db( dbName );
+				
+					let r = await db.collection( collection ).insertMany( songsArray );
+					equal( songsArray.length, r.insertedCount );
+					console.log("Data added to " + collection + " collection");  
+						
+				} catch (err) {
+					console.log( err.stack );
+					return "ERROR: Failed to load " + collection + " collection" + "<br/>" + err.stack;
+				}
+			
+				if (client) {
+					client.close();
+				}
+			}();
+
+			return "Successfully loaded " + collection + " collection with " + karaokeCounter + " entries";
+		} else {
+			console.log("There are no records to add aborting process");
+			return "Process aborted";
+		}	
 	}
 
 }
