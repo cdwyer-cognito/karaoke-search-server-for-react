@@ -6,6 +6,7 @@ const QueryRequestsCollection = require('../src/queryRequestsCollection');
 const queryRequestsCollection = new QueryRequestsCollection();
 const QueryAdminCollection = require('../src/queryAdminCollection');
 const queryAdminCollection = new QueryAdminCollection();
+const paths = require('../paths');
 
 router.post('/', function( req, res ) {
   const task = req.body;
@@ -42,6 +43,10 @@ router.post('/', function( req, res ) {
       console.log( "Authentication failed" );
       res.status(401).send("{error: \"Not Authorised\"}");
     }
+  }
+
+  if ( task.getDbLocations ) {
+    res.status(200).send( JSON.stringify(paths. virtualDJdatabaseXMLFilepaths ));
   }
 });
 
