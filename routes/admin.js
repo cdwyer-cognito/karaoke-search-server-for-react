@@ -7,8 +7,9 @@ const queryRequestsCollection = new QueryRequestsCollection();
 const QueryAdminCollection = require('../src/queryAdminCollection');
 const queryAdminCollection = new QueryAdminCollection();
 const paths = require('../paths');
+const fs = require('fs');
 
-router.post('/', function( req, res ) {
+router.post('/', async function( req, res ) {
   const task = req.body;
 
   if ( task.reloadDatabase ) {
@@ -20,18 +21,9 @@ router.post('/', function( req, res ) {
 
   if ( task.clearRequests ) {
     console.log( "dropping the requests table");
-    queryRequestsCollection.clearRequestsCollection()
+    await queryRequestsCollection.clearRequestsCollection()
       .then( res.status(200).send() )
       .catch(err => console.log( err ));
-  }
-
-  if ( task.getAdminCollection ) {
-    console.log( "getting the admin table");
-    queryAdminCollection.getCollection()
-      .then( collection => { 
-        console.log( collection );
-        res.status(200).send( JSON.stringify(collection) ) } )
-      .catch( err => console.log(err) );
   }
 
   if ( task.login ) {
@@ -45,8 +37,20 @@ router.post('/', function( req, res ) {
     }
   }
 
-  if ( task.getDbLocations ) {
-    res.status(200).send( JSON.stringify(paths. virtualDJdatabaseXMLFilepaths ));
+  if ( task.loadAdmin ) {
+    const dbs = paths.virtualDJdatabaseXMLFilepaths.map( filepath => {
+      return {
+        filepath: filepath,
+        connected: fs.existsSync( filepath )
+      }
+    })
+
+    const body = {
+      vdjDbPaths: dbs,
+      songCount: await loadXML.getSongCount()
+    }
+
+    res.status(200).send( JSON.stringify( body) );
   }
 });
 

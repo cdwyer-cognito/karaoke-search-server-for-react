@@ -1,16 +1,18 @@
+const fs =  require('fs');
+const xml2json = require('xml2json');
+const MongoClient = require('mongodb').MongoClient;
+const equal = require('assert');
+const paths = require('../paths');
 class LoadXML {
 
 	constructor(){
+		this.songCount = 0;
 
 	}
 
 	async loadXML() {
 
-		const fs =  require('fs');
-		const xml2json = require('xml2json');
-		const MongoClient = require('mongodb').MongoClient;
-		const equal = require('assert');
-		const paths = require('../paths');
+
 		const url = "mongodb://localhost:27017/karaokeSearch";
 		const dbName = "karaoke";
 		const collection = "songs";
@@ -201,11 +203,50 @@ class LoadXML {
 				}
 			}();
 
+			this.songCount = karaokeCounter;
+
 			return "Successfully loaded " + collection + " collection with " + karaokeCounter + " entries";
 		} else {
 			console.log("There are no records to add aborting process");
 			return "Process aborted";
 		}	
+	}
+
+	async getSongCount(){
+		console.log("Request for karaoke song count for db");
+		let int = this.songCount;
+
+		if ( int === 0 ) {
+			console.log("Count not stored in Class, requesting from db");
+			const url = "mongodb://localhost:27017/karaokeSearch";
+			const dbName = "karaoke";
+			const collection = "songs";
+
+			await async function() {
+				let client;
+			
+				try {
+					client = await MongoClient.connect( url, { useNewUrlParser: true } )
+					.catch(err => console.log(err));
+					console.log("Connected correctly to server");
+					
+					const db = client.db( dbName );
+				
+					int = await db.collection( collection ).countDocuments();
+						
+				} catch (err) {
+					console.log( err.stack );
+				}
+			
+				if (client) {
+					client.close();
+				}
+			}();
+			this.songCount = int;
+		}
+
+		return int;
+
 	}
 
 }
