@@ -1,7 +1,7 @@
 {
   "main.css": "/static/css/main.4c90ec78.chunk.css",
-  "main.js": "/static/js/main.7cde5335.chunk.js",
-  "main.js.map": "/static/js/main.7cde5335.chunk.js.map",
+  "main.js": "/static/js/main.afb840f2.chunk.js",
+  "main.js.map": "/static/js/main.afb840f2.chunk.js.map",
   "static/js/1.d3a877e6.chunk.js": "/static/js/1.d3a877e6.chunk.js",
   "static/js/1.d3a877e6.chunk.js.map": "/static/js/1.d3a877e6.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
@@ -10,6 +10,6 @@
   "static/media/logo-karaoke-png.png": "/static/media/logo-karaoke-png.3a41409a.png",
   "static/media/singers.png": "/static/media/singers.7af10c51.png",
   "index.html": "/index.html",
-  "precache-manifest.a763a9df878c9f9e04a93ada326cb310.js": "/precache-manifest.a763a9df878c9f9e04a93ada326cb310.js",
+  "precache-manifest.64928372bac64aa9da944f12960f3224.js": "/precache-manifest.64928372bac64aa9da944f12960f3224.js",
   "service-worker.js": "/service-worker.js"
 }
