@@ -9,7 +9,7 @@ const queryAdminCollection = new QueryAdminCollection();
 const paths = require('../paths');
 const fs = require('fs');
 
-const _authTokens = [];
+let _authTokens = [];
 
 function guid() {
   function s4() {
@@ -23,30 +23,31 @@ function guid() {
 
 router.post('/', async function( req, res ) {
   const task = req.body;
+  const authToken = req.headers['x-auth-token'];
 
   if ( task.reloadDatabase ) {
 
-    if ( _authTokens.includes( task.token ) ) {
+    if ( _authTokens.includes( authToken ) ) {
       console.log( "Reloading database.xml file to songs table");
       loadXML.loadXML()
         .then( res.status(200).send() )
         .catch(err => console.log( err ));
     } else {
       console.log( "not authorised to reload the songs table");
-      res.status(401).send("{error: \"Not Authorised\"}");
+      res.status(401).send( { error: "Not Authorised" } );
     }
   }
 
   if ( task.clearRequests ) {
 
-    if ( _authTokens.includes( task.token ) ) {
+    if ( _authTokens.includes( authToken ) ) {
       console.log( "dropping the requests table");
       await queryRequestsCollection.clearRequestsCollection()
         .then( res.status(200).send() )
         .catch(err => console.log( err ));
       } else {
         console.log( "not authorised to drop the requests table");
-        res.status(401).send("{error: \"Not Authorised\"}");
+        res.status(401).send( { error: "Not Authorised" } );
       }
   }
 
@@ -56,11 +57,18 @@ router.post('/', async function( req, res ) {
       console.log( "Authentication successful" );
       const token = guid();
       _authTokens.push(token); 
-      res.status(200).send( "{ token: " + token + "}");
+      res.status(200).send( { token: token  } );
     } else {
       console.log( "Authentication failed" );
-      res.status(401).send("{error: \"Not Authorised\"}");
+      res.status(401).send( { error: "Not Authorised" } );
     }
+  }
+
+  if ( task.logout ) {
+    console.log( "Logout requested" );
+    _authTokens = _authTokens.filter( token => token !== authToken ? token : null );
+    console.log( "Deleted auth token:", authToken );
+    res.status(200).send( { message: "logout successful" });
   }
 
   if ( task.loadAdmin ) {
@@ -76,7 +84,7 @@ router.post('/', async function( req, res ) {
       songCount: await loadXML.getSongCount()
     }
 
-    res.status(200).send( JSON.stringify( body) );
+    res.status(200).send( JSON.stringify( body ) );
   }
 });
 
