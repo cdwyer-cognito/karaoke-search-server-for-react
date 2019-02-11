@@ -10,6 +10,9 @@ const paths = require('../paths');
 const fs = require('fs');
 
 let _authTokens = [];
+let _issues = [];
+const issuesFilepath = './issues.json';
+let issuesLoadedFromFile = false;
 
 function guid() {
   function s4() {
@@ -91,6 +94,22 @@ router.post('/', async function( req, res ) {
       resStatus = 200;
       resBody.vdjDbPaths = dbs;
       resBody.songCount = await loadXML.getSongCount();
+
+      break;
+    case "recordFileIssue":
+      if ( !issuesLoadedFromFile ) {
+        if ( fs.existsSync( issuesFilepath )) {
+          _issues = JSON.parse( fs.readFileSync( issuesFilepath ) );
+        }
+        issuesLoadedFromFile = true;
+      }
+
+      _issues.push( req.body.songData );
+
+      fs.writeFileSync( issuesFilepath, JSON.stringify( _issues ) );
+      resStatus = 201;
+      resBody.message = "Issue recorded";
+      resBody.songData = req.body.songData;
 
       break;
     default:
