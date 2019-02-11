@@ -104,11 +104,15 @@ router.post('/', async function( req, res ) {
         issuesLoadedFromFile = true;
       }
 
-      _issues.push( req.body.songData );
+      _issues.push( { 
+        issue: req.body.issue,
+        songData: req.body.songData 
+      });
 
       fs.writeFileSync( issuesFilepath, JSON.stringify( _issues ) );
       resStatus = 201;
       resBody.message = "Issue recorded";
+      resBody.issue = req.body.issue;
       resBody.songData = req.body.songData;
 
       break;
