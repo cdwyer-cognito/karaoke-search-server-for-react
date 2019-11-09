@@ -16,79 +16,79 @@ let issuesLoadedFromFile = false;
 
 function guid() {
   function s4() {
-  return Math.floor( ( 1 + Math.random() ) * 0x10000)
-  .toString(16)
-  .substring(1);
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
   }
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-  s4() + '-' + s4() + s4() + s4();
+    s4() + '-' + s4() + s4() + s4();
 }
 
-router.post('/', async function( req, res ) {
+router.post('/', async function (req, res) {
   const task = req.body.task;
   const authToken = req.headers['x-auth-token'];
 
   const resBody = {};
   let resStatus = 500;
 
-  switch ( task ) {
-    case "login" : 
-      console.log( "Authentication request received!" );
-      if ( queryAdminCollection.authorised.includes( req.body.value ) ) {
-        console.log( "Authentication successful" );
+  switch (task) {
+    case "login":
+      console.log("Authentication request received!");
+      if (queryAdminCollection.authorised.includes(req.body.value)) {
+        console.log("Authentication successful");
         const token = guid();
-        _authTokens.push(token); 
+        _authTokens.push(token);
         resStatus = 200;
         resBody.token = token;
       } else {
-        console.log( "Authentication failed" );
+        console.log("Authentication failed");
         resStatus = 401;
         resBody.error = "Not Authorised";
       }
       break;
     case "logout":
-      console.log( "Logout requested" );
-      _authTokens = _authTokens.filter( token => token !== authToken ? token : null );
-      console.log( "Deleted auth token:", authToken );
+      console.log("Logout requested");
+      _authTokens = _authTokens.filter(token => token !== authToken ? token : null);
+      console.log("Deleted auth token:", authToken);
       resStatus = 200;
       resBody.message = "logout successful"
       break;
     case "reloadDatabase":
-      if ( _authTokens.includes( authToken ) ) {
-        console.log( "Reloading database.xml file to songs table");
+      if (_authTokens.includes(authToken)) {
+        console.log("Reloading database.xml file to songs table");
         loadXML.loadXML()
-          .then( () => { 
+          .then(() => {
             resStatus = 200;
             resBody.message = "songs database reloaded";
           })
-          .catch(err => console.log( err ));
+          .catch(err => console.log(err));
       } else {
-        console.log( "not authorised to reload the songs table");
+        console.log("not authorised to reload the songs table");
         resStatus = 401;
         resBody.error = "Not Authorised";
       }
       break;
     case "clearRequests":
-      if ( _authTokens.includes( authToken ) ) {
-        console.log( "dropping the requests table");
+      if (_authTokens.includes(authToken)) {
+        console.log("dropping the requests table");
         await queryRequestsCollection.clearRequestsCollection()
-          .then( () => {
+          .then(() => {
             console.log("cleared requests table");
             resStatus = 200;
             resBody.message = "cleared requests table";
           })
-          .catch(err => console.log( err ));
+          .catch(err => console.log(err));
       } else {
-        console.log( "not authorised to drop the requests table");
+        console.log("not authorised to drop the requests table");
         resStatus = 401;
         resBody.error = "Not Authorised";
       }
       break;
     case "loadAdmin":
-      const dbs = paths.virtualDJdatabaseXMLFilepaths.map( filepath => {
+      const dbs = paths.virtualDJdatabaseXMLFilepaths.map(filepath => {
         return {
           filepath: filepath,
-          connected: fs.existsSync( filepath )
+          connected: fs.existsSync(filepath)
         }
       })
       resStatus = 200;
@@ -97,19 +97,19 @@ router.post('/', async function( req, res ) {
 
       break;
     case "recordFileIssue":
-      if ( !issuesLoadedFromFile ) {
-        if ( fs.existsSync( issuesFilepath )) {
-          _issues = JSON.parse( fs.readFileSync( issuesFilepath ) );
+      if (!issuesLoadedFromFile) {
+        if (fs.existsSync(issuesFilepath)) {
+          _issues = JSON.parse(fs.readFileSync(issuesFilepath));
         }
         issuesLoadedFromFile = true;
       }
 
-      _issues.push( { 
+      _issues.push({
         issue: req.body.issue,
-        songData: req.body.songData 
+        songData: req.body.songData
       });
 
-      fs.writeFileSync( issuesFilepath, JSON.stringify( _issues ) );
+      fs.writeFileSync(issuesFilepath, JSON.stringify(_issues));
       resStatus = 201;
       resBody.message = "Issue recorded";
       resBody.issue = req.body.issue;
@@ -117,12 +117,12 @@ router.post('/', async function( req, res ) {
 
       break;
     default:
-      console.log("No matching admin request:", task );
+      console.log("No matching admin request:", task);
       resStatus = 400;
       resBody.error = "No matching admin request";
   }
 
-  res.status( resStatus ).send( resBody );
+  res.status(resStatus).send(resBody);
 
 });
 
