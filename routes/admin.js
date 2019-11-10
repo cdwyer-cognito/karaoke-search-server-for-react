@@ -56,7 +56,7 @@ router.post('/', async function (req, res) {
     case "reloadDatabase":
       if (_authTokens.includes(authToken)) {
         console.log("Reloading database.xml file to songs table");
-        loadXML.loadXML()
+        await loadXML.loadXML()
           .then(() => {
             resStatus = 200;
             resBody.message = "songs database reloaded";
