@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.557b9d17.chunk.css",
-    "main.js": "/static/js/main.dc85ae56.chunk.js",
-    "main.js.map": "/static/js/main.dc85ae56.chunk.js.map",
+    "main.js": "/static/js/main.ba529636.chunk.js",
+    "main.js.map": "/static/js/main.ba529636.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.36bc7994.js",
     "runtime-main.js.map": "/static/js/runtime-main.36bc7994.js.map",
     "static/js/2.fd7dc305.chunk.js": "/static/js/2.fd7dc305.chunk.js",
@@ -12,7 +12,7 @@
     "static/js/4.5c1c3658.chunk.js": "/static/js/4.5c1c3658.chunk.js",
     "static/js/4.5c1c3658.chunk.js.map": "/static/js/4.5c1c3658.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.735ab72dda5d0fd7000711c508e552e6.js": "/precache-manifest.735ab72dda5d0fd7000711c508e552e6.js",
+    "precache-manifest.affec1b9148ce6d75cb45c7df1cc3377.js": "/precache-manifest.affec1b9148ce6d75cb45c7df1cc3377.js",
     "service-worker.js": "/service-worker.js",
     "static/css/main.557b9d17.chunk.css.map": "/static/css/main.557b9d17.chunk.css.map",
     "static/media/logo-karaoke-png.png": "/static/media/logo-karaoke-png.3a41409a.png",
