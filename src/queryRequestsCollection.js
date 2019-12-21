@@ -14,6 +14,8 @@ class QueryRequestCollection {
         const collection = this.collection;
         let dataObj;
 
+        // removing id from the search db table so it will generate a new id when inserted into requests table.
+        // this prevents the bug where the same song could not be requested twice.
         delete jsonObj._id;
 
         return new Promise(async function (resolve) {
