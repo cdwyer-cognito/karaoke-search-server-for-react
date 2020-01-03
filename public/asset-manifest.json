@@ -1,21 +1,28 @@
 {
   "files": {
     "main.css": "/static/css/main.557b9d17.chunk.css",
-    "main.js": "/static/js/main.555d173a.chunk.js",
-    "main.js.map": "/static/js/main.555d173a.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.4774b500.js",
-    "runtime-main.js.map": "/static/js/runtime-main.4774b500.js.map",
-    "static/js/2.8cc350f2.chunk.js": "/static/js/2.8cc350f2.chunk.js",
-    "static/js/2.8cc350f2.chunk.js.map": "/static/js/2.8cc350f2.chunk.js.map",
-    "static/js/3.b31c6219.chunk.js": "/static/js/3.b31c6219.chunk.js",
-    "static/js/3.b31c6219.chunk.js.map": "/static/js/3.b31c6219.chunk.js.map",
-    "static/js/4.9d8807f2.chunk.js": "/static/js/4.9d8807f2.chunk.js",
-    "static/js/4.9d8807f2.chunk.js.map": "/static/js/4.9d8807f2.chunk.js.map",
+    "main.js": "/static/js/main.ceb71da3.chunk.js",
+    "main.js.map": "/static/js/main.ceb71da3.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.06650bb7.js",
+    "runtime-main.js.map": "/static/js/runtime-main.06650bb7.js.map",
+    "static/js/2.33a537e5.chunk.js": "/static/js/2.33a537e5.chunk.js",
+    "static/js/2.33a537e5.chunk.js.map": "/static/js/2.33a537e5.chunk.js.map",
+    "static/js/3.9817c6f8.chunk.js": "/static/js/3.9817c6f8.chunk.js",
+    "static/js/3.9817c6f8.chunk.js.map": "/static/js/3.9817c6f8.chunk.js.map",
+    "static/js/4.a5b541aa.chunk.js": "/static/js/4.a5b541aa.chunk.js",
+    "static/js/4.a5b541aa.chunk.js.map": "/static/js/4.a5b541aa.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.7748dee3cf11d6b137d52ffa087ece22.js": "/precache-manifest.7748dee3cf11d6b137d52ffa087ece22.js",
+    "precache-manifest.e211621bb7d0c7855115d754d4bf05ad.js": "/precache-manifest.e211621bb7d0c7855115d754d4bf05ad.js",
     "service-worker.js": "/service-worker.js",
     "static/css/main.557b9d17.chunk.css.map": "/static/css/main.557b9d17.chunk.css.map",
+    "static/js/2.33a537e5.chunk.js.LICENSE": "/static/js/2.33a537e5.chunk.js.LICENSE",
     "static/media/logo-karaoke-png.png": "/static/media/logo-karaoke-png.3a41409a.png",
     "static/media/singers.png": "/static/media/singers.7af10c51.png"
-  }
+  },
+  "entrypoints": [
+    "static/js/runtime-main.06650bb7.js",
+    "static/js/2.33a537e5.chunk.js",
+    "static/css/main.557b9d17.chunk.css",
+    "static/js/main.ceb71da3.chunk.js"
+  ]
 }
