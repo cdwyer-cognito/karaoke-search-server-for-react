@@ -157,6 +157,42 @@ class QueryRequestCollection {
     async countRecords() {
         return await this.getRequests().length;
     }
+
+    async checkForDuplicateRequest(body) {
+        const { UID } = body
+        let results = [];
+        const url = this.url;
+        const dbName = this.dbName;
+        const collection = this.collection;
+        const obj = { request: body, duplicate: false, results: [] };
+
+        await async function () {
+            let client;
+
+            try {
+                client = await MongoClient.connect(url, { useNewUrlParser: true });
+                const db = client.db(dbName);
+                const col = db.collection(collection);
+
+                results = await col.find({ UID: UID }).toArray();
+
+                if (results.length > 0) {
+                    obj.duplicate = true;
+                    obj.results = results;
+                }
+            } catch (err) {
+                console.log(err.stack);
+            }
+
+            if (client) {
+                client.close();
+            }
+
+        }();
+
+        return obj;
+
+    }
 }
 
 module.exports = QueryRequestCollection;
