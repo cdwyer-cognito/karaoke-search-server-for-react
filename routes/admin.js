@@ -33,29 +33,29 @@ router.post('/', async function (req, res) {
 
   switch (task) {
     case "login":
-      console.log("Authentication request received!");
+      // console.log("Authentication request received!");
       if (queryAdminCollection.authorised.includes(req.body.value)) {
-        console.log("Authentication successful");
+        // console.log("Authentication successful");
         const token = guid();
         _authTokens.push(token);
         resStatus = 200;
         resBody.token = token;
       } else {
-        console.log("Authentication failed");
+        // console.log("Authentication failed");
         resStatus = 401;
         resBody.error = "Not Authorised";
       }
       break;
     case "logout":
-      console.log("Logout requested");
+      // console.log("Logout requested");
       _authTokens = _authTokens.filter(token => token !== authToken ? token : null);
-      console.log("Deleted auth token:", authToken);
+      // console.log("Deleted auth token:", authToken);
       resStatus = 200;
       resBody.message = "logout successful"
       break;
     case "reloadDatabase":
       if (_authTokens.includes(authToken)) {
-        console.log("Reloading database.xml file to songs table");
+        // console.log("Reloading database.xml file to songs table");
         await loadXML.loadXML()
           .then(() => {
             resStatus = 200;
@@ -63,23 +63,23 @@ router.post('/', async function (req, res) {
           })
           .catch(err => console.log(err));
       } else {
-        console.log("not authorised to reload the songs table");
+        // console.log("not authorised to reload the songs table");
         resStatus = 401;
         resBody.error = "Not Authorised";
       }
       break;
     case "clearRequests":
       if (_authTokens.includes(authToken)) {
-        console.log("dropping the requests table");
+        // console.log("dropping the requests table");
         await queryRequestsCollection.clearRequestsCollection()
           .then(() => {
-            console.log("cleared requests table");
+            // console.log("cleared requests table");
             resStatus = 200;
             resBody.message = "cleared requests table";
           })
           .catch(err => console.log(err));
       } else {
-        console.log("not authorised to drop the requests table");
+        // console.log("not authorised to drop the requests table");
         resStatus = 401;
         resBody.error = "Not Authorised";
       }
@@ -117,7 +117,7 @@ router.post('/', async function (req, res) {
 
       break;
     default:
-      console.log("No matching admin request:", task);
+      // console.log("No matching admin request:", task);
       resStatus = 400;
       resBody.error = "No matching admin request";
   }

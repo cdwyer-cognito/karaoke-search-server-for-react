@@ -24,7 +24,7 @@ class QueryRequestCollection {
             try {
 
                 client = await MongoClient.connect(url, { useNewUrlParser: true });
-                console.log("Connected correctly to server");
+                // console.log("Connected correctly to server");
 
                 const db = client.db(dbName);
 
@@ -37,7 +37,7 @@ class QueryRequestCollection {
                 let r = await db.collection(collection).insertOne(dataObj);
 
                 equal(1, r.insertedCount);
-                console.log("Data added to " + collection + " collection");
+                // console.log("Data added to " + collection + " collection");
 
             } catch (err) {
                 console.log(err.stack);
@@ -47,7 +47,7 @@ class QueryRequestCollection {
             if (client) {
                 client.close();
             }
-            console.log("Request " + dataObj.RequestID + " has been added!");
+            // console.log("Request " + dataObj.RequestID + " has been added!");
             resolve({ Status: "success", Request: dataObj });
         });
     }
@@ -64,7 +64,7 @@ class QueryRequestCollection {
 
             try {
                 client = await MongoClient.connect(url, { useNewUrlParser: true });
-                console.log("Connected correctly to server");
+                // console.log("Connected correctly to server");
 
                 const db = client.db(dbName);
 
@@ -72,7 +72,7 @@ class QueryRequestCollection {
 
                 results = await col.find({ RequestID: /.*/ }).toArray();
 
-                console.log("There are " + results.length + " records returned");
+                // console.log("There are " + results.length + " records returned");
             } catch (err) {
                 console.log(err.stack);
             }
@@ -95,7 +95,7 @@ class QueryRequestCollection {
 
             try {
                 client = await MongoClient.connect(url, { useNewUrlParser: true });
-                console.log("Connected correctly to server");
+                // console.log("Connected correctly to server");
 
                 const db = client.db(dbName);
                 const col = db.collection(collection);
@@ -104,7 +104,7 @@ class QueryRequestCollection {
                 equal(1, r.matchedCount);
                 equal(1, r.modifiedCount);
 
-                console.log("Request for " + jsonObj.RequestID + " is complete");
+                // console.log("Request for " + jsonObj.RequestID + " is complete");
                 resolve({ Status: "success", RequestID: jsonObj.RequestID });
 
             } catch (err) {
@@ -126,19 +126,19 @@ class QueryRequestCollection {
         const dbName = this.dbName;
         const collection = this.collection;
 
-        console.log("Dropping " + collection + " collection in " + dbName);
+        // console.log("Dropping " + collection + " collection in " + dbName);
 
         await async function () {
             let client;
 
             try {
                 client = await MongoClient.connect(url, { useNewUrlParser: true });
-                console.log("Connected correctly to server");
+                // console.log("Connected correctly to server");
 
                 const db = client.db(dbName);
 
                 let r = await db.collection(collection).drop();
-                console.log(collection + " collection dropped");
+                // console.log(collection + " collection dropped");
 
             } catch (err) {
                 console.log(err.stack);

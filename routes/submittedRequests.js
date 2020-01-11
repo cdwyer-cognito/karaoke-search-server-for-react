@@ -3,12 +3,12 @@ const router = express.Router();
 const QueryRequestsCollection = require('../src/queryRequestsCollection');
 const queryRequestsCollection = new QueryRequestsCollection();
 
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
     queryRequestsCollection.getRequests()
-        .then( requests => {
+        .then(requests => {
             res.send(requests).status(200)
         })
-        .catch( err => console.log(err));
+        .catch(err => console.log(err));
 });
 
 module.exports = router;
